@@ -14,7 +14,7 @@ public class GroundChecker : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other.tag == "Ground")
             m_isOnGround = true;
