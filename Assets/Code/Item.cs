@@ -8,6 +8,7 @@ public class Item : MonoBehaviour {
 
     public string m_name;
     public ItemType m_type;
+    public int m_value;
 
     #endregion
 
@@ -21,22 +22,7 @@ public class Item : MonoBehaviour {
 
     public void Activate()
     {
-        if (m_type == ItemType.Increase)
-        {
-            FindObjectOfType<PersistentData>().ModifyItemsValue(m_name, m_type);
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            FindObjectOfType<PersistentData>().ModifyItemsValue(m_name, m_type);
-
-            foreach (Item it in transform.parent.GetComponentsInChildren<Item>())
-            {
-                if (it.m_type == ItemType.Decrease)
-                {
-                    it.enabled = false;
-                }
-            }
-        }
+        FindObjectOfType<PersistentData>().ModifyItemsValue(m_name, m_value, m_type);
+        Destroy(this.gameObject);
     }
 }

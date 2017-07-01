@@ -43,11 +43,20 @@ public class TabletInputMover : MonoBehaviour {
         input.y += Input.GetAxis("Vertical");
 
         //move if not in dead zone
+        Vector3 vel = m_rb.velocity;
+
         if (Mathf.Abs(input.x) > 0.1)
-            m_rb.AddForce(Vector3.right * -m_speed * Mathf.Sign(input.x), ForceMode.Force);
+            vel += Vector3.right * -m_speed * Mathf.Sign(input.x);
 
         if (Mathf.Abs(input.y) > 0.1)
-            m_rb.AddForce(Vector3.forward * -m_speed * Mathf.Sign(input.y), ForceMode.Force);
+            vel += Vector3.forward * -m_speed * Mathf.Sign(input.y);
+
+        if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
+        {
+            //calculate and add drag
+            vel *= 1 - (Time.deltaTime * m_speed);
+        }
+            m_rb.velocity = vel;
 
         //jump
         if ((input.z > 0.6 || Input.GetKeyDown(KeyCode.Space)) && m_canJump)
