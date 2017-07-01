@@ -81,6 +81,17 @@ public class PersistentData : MonoBehaviour {
         }
     }
 
+    public int GetItemNumber(string item)
+    {
+        int num = 0;
+        foreach (KeyValuePair<string, int> itm in m_items)
+        {
+            if (itm.Key == item)
+                num++;
+        }
+        return num;
+    }
+
     public int GetTotalItamsValue()
     {
         int val = 0;
