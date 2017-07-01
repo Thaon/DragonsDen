@@ -20,6 +20,14 @@ public class TabletInputMover : MonoBehaviour {
 
     #endregion
 
+    void Awake()
+    {
+        if (!FindObjectOfType<PersistentData>())
+        {
+            Instantiate(Resources.Load("PersistentDataGO"));
+        }
+    }
+
     void Start ()
     {
         m_rb = GetComponent<Rigidbody>();
