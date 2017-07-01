@@ -51,10 +51,10 @@ public class TabletInputMover : MonoBehaviour {
             vel.x = 0;
 
             if (Mathf.Abs(input.x) > 0.1)
-                vel += Vector3.right * -m_speed * Mathf.Sign(input.x);
+                vel += Vector3.forward * -m_speed * Mathf.Sign(input.x) * -1;
 
             if (Mathf.Abs(input.y) > 0.1)
-                vel += Vector3.forward * -m_speed * Mathf.Sign(input.y);
+                vel += Vector3.right * -m_speed * Mathf.Sign(input.y);
 
             if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
             {
