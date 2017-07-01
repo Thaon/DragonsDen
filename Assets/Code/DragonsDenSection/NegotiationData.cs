@@ -15,7 +15,6 @@ public class NegotiationData : MonoBehaviour
 	int moneyWanted;
 	int percentageAvailable;
 
-
 	public PersistentData persData;
 
 	// Use this for initialization
@@ -42,9 +41,17 @@ public class NegotiationData : MonoBehaviour
 	public void SubmitOffer ()
 	{
 		int dealValue = currentMoney * (1 + percentageAvailable / 10) - moneyWanted;
+
+
+
 		if (dealValue > currentMoney)
 			print ("hello");
 			
+	}
+
+	void CreateProduct ()
+	{
+
 	}
 
 }
