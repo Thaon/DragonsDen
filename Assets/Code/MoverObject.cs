@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class MoverObject : MonoBehaviour
 {
-
+    private PersistentData m_pData;
     private Vector3 m_speed;
 
     void Start()
     {
-        m_speed = FindObjectOfType<PersistentData>().m_speed;
+        m_pData = FindObjectOfType<PersistentData>();
+        m_speed = m_pData.m_speed;
     }
 
     void Update()
     {
-        transform.position += m_speed * Time.deltaTime;
+        if (m_pData.m_state == GameState.Playing)
+        {
+            transform.position += m_speed * Time.deltaTime;
+        }
     }
 
     public void Kill()
