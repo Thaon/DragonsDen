@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Fungus;
 
 public class NegotiationData : MonoBehaviour 
 {
+
+	public Flowchart flowchart;
 
 	public Text moneyWantedText;
 	public Slider moneySlider;
@@ -36,6 +39,12 @@ public class NegotiationData : MonoBehaviour
 	float[] currentMultiplier = new float[4];
 	public Text[] buttonsText;
 	public string[,] descriptions = new string[4,3];
+
+	public Text productName;
+	int productWords = 0;
+
+	public GameObject buttonPanel;
+	public GameObject toasterPanel;
 
 
 	// Use this for initialization
@@ -100,13 +109,12 @@ public class NegotiationData : MonoBehaviour
 		descriptions[2, 2] = "Super Premium";
 
 		descriptions[3, 0] = "Toaster";
-		descriptions[3, 1] = "Volvo xc60";
+		descriptions[3, 1] = "Toilet";
 		descriptions[3, 2] = "Washer dryer combo";
 
 
 		for (int i = 0; i < 3; i++)
 		{
-			print (i);
 
 			if (pickupCount[i] >= 6)
 			{
@@ -140,6 +148,9 @@ public class NegotiationData : MonoBehaviour
 			assetValue += Mathf.RoundToInt (pickupCount[i] * shares[i] * (1 + currentMultiplier[i]) * dragonPref[chosenDragon, i]);
 		}
 
+		print ("asset: " + assetValue);
+		print ("deal: " + dealValue);
+
 		if (dealValue > currentMoney)
 			print ("hello");
 			
@@ -153,14 +164,35 @@ public class NegotiationData : MonoBehaviour
 		{
 			maxMultiplier[val] = 0.2f;
 			buttonsText[val].text = descriptions[val, 1];
+
+			productName.text += descriptions[val, 2];
 		}
 		else if (maxMultiplier[val] == 0.2f)
 		{
 			maxMultiplier[val] = 0.0f;
 			buttonsText[val].text = descriptions[val, 0];
-		}
 
+			productName.text += descriptions[val, 1];
+		}
+		else
+			productName.text += descriptions[val, 0];
+
+		productName.text += ", ";
+		productWords++;
+
+		if (productWords == 3)
+		{
+			buttonPanel.SetActive (false);
+			toasterPanel.SetActive (true);
+		}
+			
 	}
-		
+
+	public void PickToaster (int val)
+	{
+		productName.text += descriptions[3, val];
+
+		flowchart.ExecuteBlock ("ChooseDragon");
+	}
 
 }
