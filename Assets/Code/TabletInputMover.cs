@@ -11,7 +11,7 @@ public class TabletInputMover : MonoBehaviour {
     public float m_speed;
     public float m_jumpSpeed;
     [SerializeField]
-    public Text m_text;
+    //public Text m_text;
     public float m_gravity;
 
     private Rigidbody m_rb;
@@ -58,7 +58,9 @@ public class TabletInputMover : MonoBehaviour {
 
         //reset jump and apply gravity
         if (m_groundChecker.m_isOnGround)
-            m_canJump = true;
+        {
+            
+        }
         else
             m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
 
@@ -71,5 +73,7 @@ public class TabletInputMover : MonoBehaviour {
                 if (Vector3.Distance(hit.point, transform.position) < 5.3f)
                     transform.position += new Vector3(0, .1f, 0);
         }
+        else
+            m_canJump = true;
     }
 }

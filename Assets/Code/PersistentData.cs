@@ -9,14 +9,27 @@ public class PersistentData : MonoBehaviour {
     public Vector3 m_speed;
 
     public List<string> m_items;
-    public List<uint> m_itemsValues;
+
+    public List<GameObject> m_slotsArray;
 
     #endregion
 
     void Start ()
     {
-        foreach (string str in m_items)
-            m_itemsValues.Add(0);
+        m_slotsArray = new List<GameObject>();
+        m_items = new List<string>();
+
+        Transform[] arr = GameObject.Find("SlotsArray").GetComponentsInChildren<Transform>();
+        foreach(Transform tr in arr)
+        {
+            if (tr.name != "SlotsArray")
+                m_slotsArray.Add(tr.gameObject);
+        }
+
+        foreach (GameObject go in m_slotsArray)
+        {
+            go.SetActive(false);
+        }
 	}
 	
 	void Update ()
@@ -24,9 +37,21 @@ public class PersistentData : MonoBehaviour {
 		
 	}
 
-    public void ModifyItemsValue(string name, uint value, ItemType type)
+    public void ModifyItemsValue(string name, ItemType type)
     {
-        int itemID = m_items.FindIndex(nm => nm == name);
-        m_itemsValues[itemID] = type == ItemType.Increase ? m_itemsValues[itemID] += value : m_itemsValues[itemID] -= value;
+        if (type == ItemType.Increase)
+        {
+            m_items.Add(name);
+            m_slotsArray[m_items.Count - 1].SetActive(true);
+        }
+        else
+        {
+            if (m_items.Count != 0)
+            {
+                int itemID = m_items.FindIndex(nm => nm == name);
+                m_slotsArray[m_items.Count - 1].SetActive(false);
+                m_items.RemoveAt(m_items.Count - 1);
+            }
+        }
     }
 }
