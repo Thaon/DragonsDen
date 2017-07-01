@@ -64,7 +64,7 @@ public class PersistentData : MonoBehaviour {
             m_items.Add(new KeyValuePair<string, int>(name, value));
             m_slotsArray[m_items.Count - 1].SetActive(true);
 
-            if (m_items.Count > 10)
+            if (m_items.Count >= 10)
             {
                 Pause();
                 ChangeSceneTo("PlanInfo");
@@ -128,6 +128,10 @@ public class PersistentData : MonoBehaviour {
                 go.SetActive(false);
             }
         }
+        if (newScene.name == "Plan")
+        {
+
+        }
     }
 
     public void ChangeSceneTo(string scene)
@@ -141,6 +145,12 @@ public class PersistentData : MonoBehaviour {
     {
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(scene);
+    }
+
+    IEnumerator EndPlanTime()
+    {
+        yield return new WaitForSeconds(5);
+        ChangeSceneTo("DenInfo");
     }
 
     #endregion
