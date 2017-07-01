@@ -15,9 +15,15 @@ public class NegotiationData : MonoBehaviour
 	int moneyWanted;
 	int percentageAvailable;
 
+
+	public PersistentData persData;
+
 	// Use this for initialization
 	void Start () 
 	{
+		//persData = FindObjectOfType <PersistentData> ();
+		//currentMoney = persData.GetTotalItamsValue ();
+
 		moneyWanted = (int)Mathf.Round (currentMoney + currentMoney * moneySlider.value * 1.5f);
 		moneyWantedText.text = moneyWanted.ToString ();
 		percentageAvailable = (int)Mathf.Round ( percentageSlider.value * 51);
@@ -31,6 +37,14 @@ public class NegotiationData : MonoBehaviour
 		moneyWantedText.text = moneyWanted.ToString ();
 		percentageAvailable = (int)Mathf.Round ( percentageSlider.value * 51);
 		percentageText.text = percentageAvailable.ToString ();
+	}
+
+	public void SubmitOffer ()
+	{
+		int dealValue = currentMoney * (1 + percentageAvailable / 10) - moneyWanted;
+		if (dealValue > currentMoney)
+			print ("hello");
+			
 	}
 
 }
