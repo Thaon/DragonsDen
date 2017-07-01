@@ -42,22 +42,25 @@ public class TabletInputMover : MonoBehaviour {
         if (m_pData.m_state == GameState.Playing)
         {
             Vector3 input = Input.acceleration;
-            input.x += Input.GetAxis("Horizontal");
-            input.y += Input.GetAxis("Vertical");
+            input.y += Input.GetAxis("Horizontal") * -1;
+            input.x += Input.GetAxis("Vertical");
 
             //move if not in dead zone
             Vector3 vel = m_rb.velocity;
+            vel.z = 0;
+            vel.x = 0;
 
             if (Mathf.Abs(input.x) > 0.1)
-                vel += Vector3.right * -m_speed * Mathf.Sign(input.x);
+                vel += Vector3.forward * -m_speed * Mathf.Sign(input.x) * -1;
 
             if (Mathf.Abs(input.y) > 0.1)
-                vel += Vector3.forward * -m_speed * Mathf.Sign(input.y);
+                vel += Vector3.right * -m_speed * Mathf.Sign(input.y);
 
             if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
             {
                 //calculate and add drag
-                vel *= 1 - (Time.deltaTime * m_speed);
+                vel.z = 0;
+                vel.x = 0;
             }
             m_rb.velocity = vel;
 
