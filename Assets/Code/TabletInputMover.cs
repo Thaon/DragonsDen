@@ -12,6 +12,7 @@ public class TabletInputMover : MonoBehaviour {
     public float m_jumpSpeed;
     [SerializeField]
     public Text m_text;
+    public float m_gravity;
 
     private Rigidbody m_rb;
     private GroundChecker m_groundChecker;
@@ -41,7 +42,7 @@ public class TabletInputMover : MonoBehaviour {
             m_rb.AddForce(Vector3.forward * -m_speed * Mathf.Sign(input.y), ForceMode.Force);
 
         //jump
-        if (input.z > 0.6 && m_canJump)
+        if ((input.z > 0.6 || Input.GetKeyDown(KeyCode.Space)) && m_canJump)
         {
             m_canJump = false;
             m_rb.AddForce(Vector3.up * m_jumpSpeed, ForceMode.Impulse);
@@ -51,7 +52,7 @@ public class TabletInputMover : MonoBehaviour {
         if (m_groundChecker.m_isOnGround)
             m_canJump = true;
         else
-            m_rb.AddForce(Vector3.up * -10, ForceMode.VelocityChange);
+            m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
 
         //make dragon float a bit off the ground
         RaycastHit hit;
