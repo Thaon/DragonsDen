@@ -17,6 +17,7 @@ public class TabletInputMover : MonoBehaviour {
     private Rigidbody m_rb;
     private GroundChecker m_groundChecker;
     private bool m_canJump = true;
+    private PersistentData m_pData;
 
     #endregion
 
@@ -26,6 +27,7 @@ public class TabletInputMover : MonoBehaviour {
         {
             Instantiate(Resources.Load("PersistentDataGO"));
         }
+        m_pData = FindObjectOfType<PersistentData>();
     }
 
     void Start ()
@@ -33,56 +35,60 @@ public class TabletInputMover : MonoBehaviour {
         m_rb = GetComponent<Rigidbody>();
         m_groundChecker = GetComponentInChildren<GroundChecker>();
 	}
-	
-	void Update ()
+
+    void Update()
     {
         //m_text.text = Input.acceleration.x.ToString() + ", " + Input.acceleration.y.ToString() + ", " + Input.acceleration.z.ToString();
-
-        Vector3 input = Input.acceleration;
-        input.x += Input.GetAxis("Horizontal");
-        input.y += Input.GetAxis("Vertical");
-
-        //move if not in dead zone
-        Vector3 vel = m_rb.velocity;
-
-        if (Mathf.Abs(input.x) > 0.1)
-            vel += Vector3.right * -m_speed * Mathf.Sign(input.x);
-
-        if (Mathf.Abs(input.y) > 0.1)
-            vel += Vector3.forward * -m_speed * Mathf.Sign(input.y);
-
-        if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
+        if (m_pData.m_state == GameState.Playing)
         {
-            //calculate and add drag
-            vel *= 1 - (Time.deltaTime * m_speed);
-        }
+            Vector3 input = Input.acceleration;
+            input.x += Input.GetAxis("Horizontal");
+            input.y += Input.GetAxis("Vertical");
+
+            //move if not in dead zone
+            Vector3 vel = m_rb.velocity;
+
+            if (Mathf.Abs(input.x) > 0.1)
+                vel += Vector3.right * -m_speed * Mathf.Sign(input.x);
+
+            if (Mathf.Abs(input.y) > 0.1)
+                vel += Vector3.forward * -m_speed * Mathf.Sign(input.y);
+
+            if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
+            {
+                //calculate and add drag
+                vel *= 1 - (Time.deltaTime * m_speed);
+            }
             m_rb.velocity = vel;
 
-        //jump
-        if ((input.z > 0.6 || Input.GetKeyDown(KeyCode.Space)) && m_canJump)
-        {
-            m_canJump = false;
-            m_rb.AddForce(Vector3.up * m_jumpSpeed, ForceMode.Impulse);
-        }
+            //jump
+            if ((input.z > 0.6 || Input.GetKeyDown(KeyCode.Space)) && m_canJump)
+            {
+                m_canJump = false;
+                m_rb.AddForce(Vector3.up * m_jumpSpeed, ForceMode.Impulse);
+            }
 
-        //reset jump and apply gravity
-        if (m_groundChecker.m_isOnGround)
-        {
-            
+            //reset jump and apply gravity
+            if (m_groundChecker.m_isOnGround)
+            {
+
+            }
+            else
+                m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
+
+            //make dragon float a bit off the ground
+            RaycastHit hit;
+            Debug.DrawRay(transform.position, Vector3.up * -8, Color.red);
+            if (Physics.Raycast(transform.position, Vector3.up * -1, out hit, 8))
+            {
+                if (hit.collider.tag == "Ground")
+                    if (Vector3.Distance(hit.point, transform.position) < 5.3f)
+                        transform.position += new Vector3(0, .1f, 0);
+            }
+            else
+                m_canJump = true;
         }
         else
-            m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
-
-        //make dragon float a bit off the ground
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, Vector3.up * -8, Color.red);
-        if (Physics.Raycast(transform.position, Vector3.up * -1, out hit, 8))
-        {
-            if (hit.collider.tag == "Ground")
-                if (Vector3.Distance(hit.point, transform.position) < 5.3f)
-                    transform.position += new Vector3(0, .1f, 0);
-        }
-        else
-            m_canJump = true;
+            m_rb.velocity = Vector3.zero;
     }
 }
