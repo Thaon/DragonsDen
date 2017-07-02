@@ -25,6 +25,7 @@ public class PersistentData : MonoBehaviour {
     private bool m_fadeIn = true;
     private float m_fadeInAmount = 0;
     private StudioEventEmitter m_fmodEmitter;
+    private string m_activeSceneName;
 
     #endregion
 
@@ -177,6 +178,7 @@ public class PersistentData : MonoBehaviour {
 
     void OnSceneChanged(Scene last, Scene newScene)
     {
+        m_activeSceneName = newScene.name;
         m_transitionMat = FindObjectOfType<SimpleBlit>().TransitionMaterial;
         m_fadeIn = false;
         m_fadeInAmount = 1;
@@ -222,6 +224,9 @@ public class PersistentData : MonoBehaviour {
         StartCoroutine(Change(scene));
         m_fadeIn = true;
         m_fadeInAmount = 0;
+
+        if (m_activeSceneName == "Gabe")
+            GameObject.Find("Gong").GetComponent<StudioEventEmitter>().Play();
     }
 
     IEnumerator Change(string scene)
