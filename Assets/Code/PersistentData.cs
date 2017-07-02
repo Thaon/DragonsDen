@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using EZCameraShake;
 
 public enum GameState { Playing, Paused };
 
@@ -76,6 +77,9 @@ public class PersistentData : MonoBehaviour {
         }
         else
         {
+            float magn = 5, rough = 10, fadeIn = 0.1f, fadeOut = .2f;
+            CameraShakeInstance c = CameraShaker.Instance.ShakeOnce(magn, rough, fadeIn, fadeOut);
+
             if (m_items.Count != 0)
             {
                 int itemID = m_items.FindIndex(nm => nm.Key == name);
