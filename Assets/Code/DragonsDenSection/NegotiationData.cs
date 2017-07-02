@@ -65,7 +65,7 @@ public class NegotiationData : MonoBehaviour
 	void Start () 
 	{
 		persData = FindObjectOfType <PersistentData> ();
-		//currentMoney = persData.GetTotalItamsValue ();
+		currentMoney = persData.GetTotalItamsValue ();
 
 		moneyWanted = (int)Mathf.Round (currentMoney * moneySlider.value * 1.5f);
 		moneyWantedText.text = (moneyWanted * 50000).ToString ();
@@ -91,10 +91,13 @@ public class NegotiationData : MonoBehaviour
 		shares [2] = Random.Range (0.9f, 1.2f);
 		shares [3] = Random.Range (0.9f, 1.2f);
 
-		pickupCount [0] = 6;
-		pickupCount [1] = 6;
-		pickupCount [2] = 6;
+		pickupCount [0] = persData.GetItemNumber ("Cattle");
+		pickupCount [1] = persData.GetItemNumber ("Gems");
+		pickupCount [2] = persData.GetItemNumber ("Share");
 		pickupCount [3] = 6;
+
+		print (pickupCount[0]);
+		print ("hello");
 
 		dragonPref[0, (int)pickups.cattle] = 1.1f;
 		dragonPref[0, (int)pickups.gems] = 1;
