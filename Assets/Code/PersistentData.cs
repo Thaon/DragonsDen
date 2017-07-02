@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public enum GameState { Playing, Paused };
@@ -12,6 +13,8 @@ public class PersistentData : MonoBehaviour {
     public GameState m_state = GameState.Paused;
     public Vector3 m_speed;
     public List<KeyValuePair<string, int>> m_items;
+    public Sprite[] m_itemsIcons;
+    public int[] m_itemValuesByIndex;
     public List<GameObject> m_slotsArray;
 
     private Material m_transitionMat;
@@ -63,6 +66,7 @@ public class PersistentData : MonoBehaviour {
         {
             m_items.Add(new KeyValuePair<string, int>(name, value));
             m_slotsArray[m_items.Count - 1].SetActive(true);
+            m_slotsArray[m_items.Count - 1].GetComponentInChildren<Image>().sprite = m_itemsIcons[value];
 
             if (m_items.Count >= 10)
             {
@@ -97,7 +101,7 @@ public class PersistentData : MonoBehaviour {
         int val = 0;
         foreach (KeyValuePair<string, int> kvp in m_items)
         {
-            val += kvp.Value;
+            val += m_itemValuesByIndex[kvp.Value];
         }
         return val;
     }
