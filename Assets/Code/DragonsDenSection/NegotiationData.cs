@@ -86,9 +86,9 @@ public class NegotiationData : MonoBehaviour
 
 	void Setup ()
 	{
-		shares [0] = Random.Range (0.9f, 1.2f);
-		shares [1] = Random.Range (0.9f, 1.2f);
-		shares [2] = Random.Range (0.9f, 1.2f);
+		shares [0] = persData.m_itemValuesByIndex[0];
+		shares [1] = persData.m_itemValuesByIndex[1];
+		shares [2] = persData.m_itemValuesByIndex[2];
 		shares [3] = Random.Range (0.9f, 1.2f);
 
 		pickupCount [0] = persData.GetItemNumber ("Cattle");
