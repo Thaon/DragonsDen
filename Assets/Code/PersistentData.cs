@@ -213,7 +213,7 @@ public class PersistentData : MonoBehaviour {
 
         if (newScene.name == "EndGame")
         {
-            GameObject.Find("Document").GetComponent<Text>().text = "You managed to sell " + m_perc + "% of your company for " + m_got + "K. A decent amount, the best deal for you was " + m_max + "!";
+            GameObject.Find("Document").GetComponent<Text>().text = "You managed to sell " + m_perc + "% of your company for " + m_got + ". A decent amount, the best deal for you was " + m_max + "!";
         }
     }
 

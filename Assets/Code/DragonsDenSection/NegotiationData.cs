@@ -154,14 +154,15 @@ public class NegotiationData : MonoBehaviour
 
 	public void SubmitOffer ()
 	{
-		int dealValue = currentMoney * (1 + percentageAvailable / 10) - moneyWanted;
-
 		int assetValue = 0;
+
 
 		for (int i = 0; i < 4; i++)
 		{
 			assetValue += Mathf.RoundToInt (pickupCount[i] * shares[i] * (1 + currentMultiplier[i]) * dragonPref[chosenDragon, i]);
 		}
+
+		int dealValue = assetValue * (1 + percentageAvailable / 10) - moneyWanted;
 
 		print ("asset: " + assetValue);
 		print ("deal: " + dealValue);
@@ -198,7 +199,7 @@ public class NegotiationData : MonoBehaviour
         {
             assetValue += Mathf.RoundToInt(pickupCount[i] * shares[i] * (1 + currentMultiplier[i]) * dragonPref[chosenDragon, i]);
         }
-        persData.SetDealResults(percentageAvailable, moneyWanted, assetValue);
+        persData.SetDealResults(percentageAvailable, moneyWanted * 50000, assetValue * 50000);
         persData.ChangeSceneTo("EndGame");
     }
 
