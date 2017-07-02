@@ -12,14 +12,6 @@ public class Item : MonoBehaviour {
 
     #endregion
 
-    void Start () {
-		
-	}
-	
-	void Update () {
-		
-	}
-
     public void Activate()
     {
         FindObjectOfType<PersistentData>().ModifyItemsValue(m_name, m_value, m_type);
