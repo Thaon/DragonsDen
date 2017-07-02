@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using EZCameraShake;
+using FMODUnity;
+using FMOD.Studio;
 
 public enum GameState { Playing, Paused };
 
@@ -12,24 +16,31 @@ public class PersistentData : MonoBehaviour {
     public GameState m_state = GameState.Paused;
     public Vector3 m_speed;
     public List<KeyValuePair<string, int>> m_items;
+    public Sprite[] m_itemsIcons;
+    public List<int> m_itemValuesByIndex;
     public List<GameObject> m_slotsArray;
 
     private Material m_transitionMat;
     private bool m_fadeIn = true;
     private float m_fadeInAmount = 0;
+    private StudioEventEmitter m_fmodEmitter;
 
     #endregion
 
     void Awake()
     {
         SceneManager.activeSceneChanged += OnSceneChanged;
+        m_fmodEmitter = GetComponent<StudioEventEmitter>();
         DontDestroyOnLoad(this.gameObject);
     }
 
     void Start ()
     {
-
-	}
+        m_itemValuesByIndex = new List<int>();
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.7f, 1.4f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.7f, 1.4f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.7f, 1.4f)));
+    }
 
 
     void Update ()
@@ -55,6 +66,17 @@ public class PersistentData : MonoBehaviour {
         m_fadeInAmount = Mathf.Clamp01(m_fadeInAmount);
         m_transitionMat.SetFloat("_Cutoff", m_fadeInAmount);
 
+        if (m_items!= null && m_items.Count > 0)
+        {
+            if (GetHigherAsset() == "Cattle")
+                m_fmodEmitter.SetParameter("musicSlider", 0.3f);
+
+            if (GetHigherAsset() == "Gem")
+                m_fmodEmitter.SetParameter("musicSlider", 0.6f);
+
+            if (GetHigherAsset() == "Share")
+                m_fmodEmitter.SetParameter("musicSlider", 1f);
+        }
     }
 
     public void ModifyItemsValue(string name, int value, ItemType type)
@@ -63,6 +85,7 @@ public class PersistentData : MonoBehaviour {
         {
             m_items.Add(new KeyValuePair<string, int>(name, value));
             m_slotsArray[m_items.Count - 1].SetActive(true);
+            m_slotsArray[m_items.Count - 1].GetComponentInChildren<Image>().sprite = m_itemsIcons[value];
 
             if (m_items.Count >= 10)
             {
@@ -72,6 +95,9 @@ public class PersistentData : MonoBehaviour {
         }
         else
         {
+            float magn = 5, rough = 10, fadeIn = 0.1f, fadeOut = .2f;
+            CameraShakeInstance c = CameraShaker.Instance.ShakeOnce(magn, rough, fadeIn, fadeOut);
+
             if (m_items.Count != 0)
             {
                 int itemID = m_items.FindIndex(nm => nm.Key == name);
@@ -92,12 +118,37 @@ public class PersistentData : MonoBehaviour {
         return num;
     }
 
+    public string GetHigherAsset()
+    {
+        int cat = GetItemNumber("Cattle");
+        int gem = GetItemNumber("Gem");
+        int share = GetItemNumber("Share");
+        List<int> vals = new List<int>() { cat, gem, share };
+
+        int min = 0;
+
+        foreach (int i in vals)
+        {
+            if (i > min)
+                min = i;
+        }
+
+        if (min == cat)
+            return "Cattle";
+        if (min == gem)
+            return "Gem";
+        if (min == share)
+            return "Share";
+
+        return "";
+    }
+
     public int GetTotalItamsValue()
     {
         int val = 0;
         foreach (KeyValuePair<string, int> kvp in m_items)
         {
-            val += kvp.Value;
+            val += m_itemValuesByIndex[kvp.Value];
         }
         return val;
     }
@@ -120,10 +171,13 @@ public class PersistentData : MonoBehaviour {
         m_transitionMat = FindObjectOfType<SimpleBlit>().TransitionMaterial;
         m_fadeIn = false;
         m_fadeInAmount = 1;
+        m_fmodEmitter.Stop();
 
 
         if (newScene.name == "Gabe")
         {
+            m_fmodEmitter.Play();
+
             m_slotsArray = new List<GameObject>();
             m_items = new List<KeyValuePair<string, int>>();
 

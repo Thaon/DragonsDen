@@ -12,15 +12,6 @@ public class ItemInteractor : MonoBehaviour {
 
     #endregion
 
-    void Start ()
-    {
-		
-	}
-	
-	void Update ()
-    {
-		
-	}
 
     void OnTriggerEnter(Collider other)
     {

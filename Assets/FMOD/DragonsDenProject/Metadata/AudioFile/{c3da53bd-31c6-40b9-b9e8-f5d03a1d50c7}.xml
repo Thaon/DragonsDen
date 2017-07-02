@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.09.00">
+    <object class="AudioFile" id="{c3da53bd-31c6-40b9-b9e8-f5d03a1d50c7}">
+        <property name="assetPath">
+            <value>DragonVowels/DragonVowels Bannatyne-2.ogg</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>4</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{8c27a3a2-a201-4a0e-b25f-e387037278d0}</destination>
+        </relationship>
+    </object>
+</objects>

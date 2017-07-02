@@ -13,11 +13,13 @@ public class TabletInputMover : MonoBehaviour {
     [SerializeField]
     //public Text m_text;
     public float m_gravity;
+    public float m_maxDistanceRadius;
 
     private Rigidbody m_rb;
     private GroundChecker m_groundChecker;
     private bool m_canJump = true;
     private PersistentData m_pData;
+    private Vector3 m_startingPosition;
 
     #endregion
 
@@ -34,7 +36,9 @@ public class TabletInputMover : MonoBehaviour {
     {
         m_rb = GetComponent<Rigidbody>();
         m_groundChecker = GetComponentInChildren<GroundChecker>();
-	}
+        m_startingPosition = transform.position;
+        m_startingPosition.y = 0;
+    }
 
     void Update()
     {
@@ -62,6 +66,17 @@ public class TabletInputMover : MonoBehaviour {
                 vel.z = 0;
                 vel.x = 0;
             }
+
+            //calculate distance radius
+            Vector3 nextPosition = transform.position + vel;
+            nextPosition.y = 0;
+
+            if (Vector3.Distance(nextPosition, m_startingPosition) > m_maxDistanceRadius)
+            {
+                vel.x = 0;
+                vel.z = 0;
+            }
+
             m_rb.velocity = vel;
 
             //jump
