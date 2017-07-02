@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.09.00">
+    <object class="AudioFile" id="{1e3d0fe6-06ff-4af0-bf82-e84e45838e60}">
+        <property name="assetPath">
+            <value>Music/gemsRhythm.ogg</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>20.210544217687076</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{8c27a3a2-a201-4a0e-b25f-e387037278d0}</destination>
+        </relationship>
+    </object>
+</objects>
