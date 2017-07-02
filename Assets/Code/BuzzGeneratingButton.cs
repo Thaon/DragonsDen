@@ -21,7 +21,7 @@ public class BuzzGeneratingButton : MonoBehaviour {
 	
 	public void SelectWord()
     {
-        GameObject.Find("Document").GetComponent<Text>().text += GetComponentInChildren<Text>().text + " " + m_conjunctions[Random.Range(0, m_conjunctions.Length)] + " ";
+        GameObject.Find("Document").GetComponent<Text>().text += m_conjunctions[Random.Range(0, m_conjunctions.Length)] + " " + GetComponentInChildren<Text>().text + " ";
         GetComponentInChildren<Text>().text = m_words[Random.Range(0, m_words.Length)];
     }
 }

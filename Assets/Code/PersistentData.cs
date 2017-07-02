@@ -184,6 +184,10 @@ public class PersistentData : MonoBehaviour {
         m_fadeInAmount = 1;
         m_fmodEmitter.Stop();
 
+        if (newScene.name == "MainMenu")
+        {
+            Start();
+        }
 
         if (newScene.name == "Gabe")
         {
