@@ -17,7 +17,7 @@ public class PersistentData : MonoBehaviour {
     public Vector3 m_speed;
     public List<KeyValuePair<string, int>> m_items;
     public Sprite[] m_itemsIcons;
-    public int[] m_itemValuesByIndex;
+    public List<int> m_itemValuesByIndex;
     public List<GameObject> m_slotsArray;
 
     private Material m_transitionMat;
@@ -36,7 +36,11 @@ public class PersistentData : MonoBehaviour {
 
     void Start ()
     {
-	}
+        m_itemValuesByIndex = new List<int>();
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.9f, 1.1f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.9f, 1.1f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.9f, 1.1f)));
+    }
 
 
     void Update ()
