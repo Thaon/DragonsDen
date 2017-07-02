@@ -20,6 +20,7 @@ public class TabletInputMover : MonoBehaviour {
     private bool m_canJump = true;
     private PersistentData m_pData;
     private Vector3 m_startingPosition;
+    private float m_inputOffset = 0;
 
     #endregion
 
@@ -40,32 +41,52 @@ public class TabletInputMover : MonoBehaviour {
         m_startingPosition.y = 0;
     }
 
+    public void GoLeft()
+    {
+        m_inputOffset = -1;
+    }
+
+    public void GoRight()
+    {
+        m_inputOffset = 1;
+    }
+
+    public void Stop()
+    {
+        m_inputOffset = 0;
+    }
+
     void Update()
     {
         //m_text.text = Input.acceleration.x.ToString() + ", " + Input.acceleration.y.ToString() + ", " + Input.acceleration.z.ToString();
         if (m_pData.m_state == GameState.Playing)
         {
-            Vector3 input = Input.acceleration;
-            input.y += Input.GetAxis("Horizontal") * -1;
-            input.x += Input.GetAxis("Vertical");
+            //Vector3 input = Input.acceleration;
+            //input.y += Input.GetAxis("Horizontal") * -1;
+            //input.x += Input.GetAxis("Vertical");
+            //input.z = 0;
 
             //move if not in dead zone
             Vector3 vel = m_rb.velocity;
             vel.z = 0;
             vel.x = 0;
 
-            if (Mathf.Abs(input.x) > 0.1)
-                vel += Vector3.forward * -m_speed * Mathf.Sign(input.x) * -1;
+            //if (Mathf.Abs(input.x) > 0.1)
+            //    vel += Vector3.forward * -m_speed * Mathf.Sign(input.x) * -1;
 
-            if (Mathf.Abs(input.y) > 0.1)
-                vel += Vector3.right * -m_speed * Mathf.Sign(input.y);
+            //if (Mathf.Abs(input.y) > 0.1)
+            //    vel += Vector3.right * -m_speed * Mathf.Sign(input.y);
 
-            if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
-            {
-                //calculate and add drag
-                vel.z = 0;
-                vel.x = 0;
-            }
+            //if (Mathf.Abs(input.x) <= 0.1 && Mathf.Abs(input.y) <= 0.1)
+            //{
+            //    //calculate and add drag
+            //    vel.z = 0;
+            //    vel.x = 0;
+            //}
+
+            //get input from buttons
+            if (m_inputOffset != 0)
+                vel += Vector3.forward * (-m_speed * Mathf.Sign(m_inputOffset) * -1);
 
             //calculate distance radius
             Vector3 nextPosition = transform.position + vel;
@@ -79,17 +100,10 @@ public class TabletInputMover : MonoBehaviour {
 
             m_rb.velocity = vel;
 
-            //jump
-            if ((input.z > 0.6 || Input.GetKeyDown(KeyCode.Space)) && m_canJump)
-            {
-                m_canJump = false;
-                m_rb.AddForce(Vector3.up * m_jumpSpeed, ForceMode.Impulse);
-            }
-
             //reset jump and apply gravity
             if (m_groundChecker.m_isOnGround)
             {
-
+                m_canJump = true;
             }
             else
                 m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
@@ -103,10 +117,20 @@ public class TabletInputMover : MonoBehaviour {
                     if (Vector3.Distance(hit.point, transform.position) < 5.3f)
                         transform.position += new Vector3(0, .1f, 0);
             }
-            else
-                m_canJump = true;
+
         }
         else
             m_rb.velocity = Vector3.zero;
+    }
+
+    public void Jump()
+    {
+        //jump
+        if (m_groundChecker.m_isOnGround)
+            if (m_canJump)
+            {
+                m_canJump = false;
+                m_rb.AddForce(Vector3.up * m_jumpSpeed, ForceMode.Impulse);
+            }
     }
 }
