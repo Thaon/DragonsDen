@@ -37,9 +37,9 @@ public class PersistentData : MonoBehaviour {
     void Start ()
     {
         m_itemValuesByIndex = new List<int>();
-        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.9f, 1.1f)));
-        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.9f, 1.1f)));
-        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.9f, 1.1f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.7f, 1.4f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.7f, 1.4f)));
+        m_itemValuesByIndex.Add(Mathf.RoundToInt(10 * Random.Range(0.7f, 1.4f)));
     }
 
 
