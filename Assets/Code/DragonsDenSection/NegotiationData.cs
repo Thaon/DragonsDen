@@ -45,6 +45,20 @@ public class NegotiationData : MonoBehaviour
 
 	public GameObject buttonPanel;
 	public GameObject toasterPanel;
+	public GameObject chooseDragonPanel;
+	public GameObject negotiationPanel;
+	public GameObject productDesignPanel;
+
+	public Text finalDeal;
+	public GameObject dealPanel;
+
+	/* 0 = Duncan
+	 * 1 = Peter
+	 * 2 = Deborah
+	 */
+
+	public Image[] dragonFace;
+	public Sprite[] dragonFaceSprites;
 
 
 	// Use this for initialization
@@ -53,22 +67,20 @@ public class NegotiationData : MonoBehaviour
 		persData = FindObjectOfType <PersistentData> ();
 		//currentMoney = persData.GetTotalItamsValue ();
 
-		moneyWanted = (int)Mathf.Round (currentMoney + currentMoney * moneySlider.value * 1.5f);
-		moneyWantedText.text = moneyWanted.ToString ();
+		moneyWanted = (int)Mathf.Round (currentMoney * moneySlider.value * 1.5f);
+		moneyWantedText.text = (moneyWanted * 50000).ToString ();
 		percentageAvailable = (int)Mathf.Round ( percentageSlider.value * 51);
 		percentageText.text = percentageAvailable.ToString ();
 
 		Setup ();
-
-
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		moneyWanted = (int)Mathf.Round (currentMoney + currentMoney * moneySlider.value * 1.5f);
-		moneyWantedText.text = moneyWanted.ToString ();
-		percentageAvailable = (int)Mathf.Round ( percentageSlider.value * 51);
+		moneyWanted = (int)Mathf.Round (currentMoney * moneySlider.value * 3);
+		moneyWantedText.text = (moneyWanted * 50000).ToString ();
+		percentageAvailable = (int)Mathf.Round (percentageSlider.value * 51);
 		percentageText.text = percentageAvailable.ToString ();
 	}
 
@@ -151,9 +163,29 @@ public class NegotiationData : MonoBehaviour
 		print ("asset: " + assetValue);
 		print ("deal: " + dealValue);
 
-		if (dealValue > currentMoney)
-			print ("hello");
+		if (dealValue >= assetValue + 7)
+		{
+			flowchart.ExecuteBlock ("BadDealPlayer");
+			dragonFace[chosenDragon].sprite = dragonFaceSprites[2 + chosenDragon * 3];
+		}
+
+		if (dealValue <= assetValue - 7)
+		{
+			flowchart.ExecuteBlock ("BadDealDragon");
+			dragonFace[chosenDragon].sprite = dragonFaceSprites[0  + chosenDragon * 3];
+		}
+
+		if (dealValue <= assetValue + 7 && dealValue >= assetValue - 7)
+		{
+			flowchart.ExecuteBlock ("Deal");
+			dragonFace[chosenDragon].sprite = dragonFaceSprites[2  + chosenDragon * 3];
+		}
 			
+	}
+
+	public void ProposeCounterOffer ()
+	{
+
 	}
 
 	public void CreateProduct (int val)
@@ -193,6 +225,23 @@ public class NegotiationData : MonoBehaviour
 		productName.text += descriptions[3, val];
 
 		flowchart.ExecuteBlock ("ChooseDragon");
+
+		productDesignPanel.SetActive (false);
 	}
 
+	public void ChooseDragon (int val)
+	{
+		print (val);
+		chosenDragon = val;
+
+		if (val == 0)
+			flowchart.ExecuteBlock ("DuncanBannatyne");
+		else if (val == 1)
+			flowchart.ExecuteBlock ("PeterJones");
+		else 
+			flowchart.ExecuteBlock ("DeborahMeaden");
+
+		chooseDragonPanel.SetActive (false);
+	}
+		
 }

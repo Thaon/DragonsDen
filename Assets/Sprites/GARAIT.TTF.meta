@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: e9d31174742f768489386aebb7a4e0a3
+timeCreated: 1498988388
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Garamond
+  fontNames:
+  - Garamond
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: bcfdfcb67b1421b43ae24c19b5babfbb, type: 3}
+  - {fileID: 12800000, guid: 1544e0c8211a5894e9246c3ff7005940, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
