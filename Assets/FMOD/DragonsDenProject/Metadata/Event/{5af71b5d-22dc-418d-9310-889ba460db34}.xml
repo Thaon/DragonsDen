@@ -73,7 +73,7 @@
     </object>
     <object class="EventMixerMaster" id="{e71a3d7d-c6b8-493f-888c-0ddeec2c03f5}">
         <property name="volume">
-            <value>6.5</value>
+            <value>10</value>
         </property>
         <property name="pitch">
             <value>-1.60000002</value>
@@ -122,6 +122,7 @@
     <object class="MixerBusEffectChain" id="{7296e79b-0e1e-4daf-965e-c87247e10fbc}">
         <relationship name="effects">
             <destination>{18844139-5670-4985-8906-d97e135d4a7a}</destination>
+            <destination>{f21265b3-0fd1-41a4-ab25-f824a18bbc72}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{42a4ba78-f256-42fa-9c09-3b5669652ac4}"/>
@@ -133,5 +134,16 @@
     </object>
     <object class="MixerBusPanner" id="{e17c3721-fc79-482b-bd2b-711a16f1d9b2}"/>
     <object class="MixerBusFader" id="{18844139-5670-4985-8906-d97e135d4a7a}"/>
+    <object class="CompressorEffect" id="{f21265b3-0fd1-41a4-ab25-f824a18bbc72}">
+        <property name="threshold">
+            <value>-13.5</value>
+        </property>
+        <property name="ratio">
+            <value>1.74999988</value>
+        </property>
+        <property name="gain">
+            <value>3.5</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{8230394c-5c7e-4588-b77f-60d20cd08b8c}"/>
 </objects>
