@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using EZCameraShake;
+using FMODUnity;
+using FMOD.Studio;
 
 public enum GameState { Playing, Paused };
 
@@ -21,18 +23,19 @@ public class PersistentData : MonoBehaviour {
     private Material m_transitionMat;
     private bool m_fadeIn = true;
     private float m_fadeInAmount = 0;
+    private StudioEventEmitter m_fmodEmitter;
 
     #endregion
 
     void Awake()
     {
         SceneManager.activeSceneChanged += OnSceneChanged;
+        m_fmodEmitter = GetComponent<StudioEventEmitter>();
         DontDestroyOnLoad(this.gameObject);
     }
 
     void Start ()
     {
-
 	}
 
 
@@ -59,6 +62,17 @@ public class PersistentData : MonoBehaviour {
         m_fadeInAmount = Mathf.Clamp01(m_fadeInAmount);
         m_transitionMat.SetFloat("_Cutoff", m_fadeInAmount);
 
+        if (m_items!= null && m_items.Count > 0)
+        {
+            if (GetHigherAsset() == "Cattle")
+                m_fmodEmitter.SetParameter("musicSlider", 0.3f);
+
+            if (GetHigherAsset() == "Gem")
+                m_fmodEmitter.SetParameter("musicSlider", 0.6f);
+
+            if (GetHigherAsset() == "Share")
+                m_fmodEmitter.SetParameter("musicSlider", 1f);
+        }
     }
 
     public void ModifyItemsValue(string name, int value, ItemType type)
@@ -100,6 +114,31 @@ public class PersistentData : MonoBehaviour {
         return num;
     }
 
+    public string GetHigherAsset()
+    {
+        int cat = GetItemNumber("Cattle");
+        int gem = GetItemNumber("Gem");
+        int share = GetItemNumber("Share");
+        List<int> vals = new List<int>() { cat, gem, share };
+
+        int min = 0;
+
+        foreach (int i in vals)
+        {
+            if (i > min)
+                min = i;
+        }
+
+        if (min == cat)
+            return "Cattle";
+        if (min == gem)
+            return "Gem";
+        if (min == share)
+            return "Share";
+
+        return "";
+    }
+
     public int GetTotalItamsValue()
     {
         int val = 0;
@@ -128,10 +167,13 @@ public class PersistentData : MonoBehaviour {
         m_transitionMat = FindObjectOfType<SimpleBlit>().TransitionMaterial;
         m_fadeIn = false;
         m_fadeInAmount = 1;
+        m_fmodEmitter.Stop();
 
 
         if (newScene.name == "Gabe")
         {
+            m_fmodEmitter.Play();
+
             m_slotsArray = new List<GameObject>();
             m_items = new List<KeyValuePair<string, int>>();
 
