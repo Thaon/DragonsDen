@@ -99,28 +99,30 @@ public class TabletInputMover : MonoBehaviour {
             }
 
             m_rb.velocity = vel;
-
-            //reset jump and apply gravity
-            if (m_groundChecker.m_isOnGround)
-            {
-                m_canJump = true;
-            }
-            else
-                m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
-
-            //make dragon float a bit off the ground
-            RaycastHit hit;
-            Debug.DrawRay(transform.position, Vector3.up * -8, Color.red);
-            if (Physics.Raycast(transform.position, Vector3.up * -1, out hit, 8))
-            {
-                if (hit.collider.tag == "Ground")
-                    if (Vector3.Distance(hit.point, transform.position) < 5.3f)
-                        transform.position += new Vector3(0, .1f, 0);
-            }
-
         }
         else
             m_rb.velocity = Vector3.zero;
+    }
+
+    void FixedUpdate()
+    {
+        //reset jump and apply gravity
+        if (m_groundChecker.m_isOnGround)
+        {
+            m_canJump = true;
+        }
+        else
+            m_rb.AddForce(Vector3.up * -m_gravity, ForceMode.VelocityChange);
+
+        //make dragon float a bit off the ground
+        RaycastHit hit;
+        Debug.DrawRay(transform.position, Vector3.up * -8, Color.red);
+        if (Physics.Raycast(transform.position, Vector3.up * -1, out hit, 8))
+        {
+            if (hit.collider.tag == "Ground")
+                if (Vector3.Distance(hit.point, transform.position) < 5.3f)
+                    transform.position += new Vector3(0, .1f, 0);
+        }
     }
 
     public void Jump()

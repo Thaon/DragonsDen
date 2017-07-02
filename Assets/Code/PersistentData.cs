@@ -19,6 +19,7 @@ public class PersistentData : MonoBehaviour {
     public Sprite[] m_itemsIcons;
     public List<int> m_itemValuesByIndex;
     public List<GameObject> m_slotsArray;
+    public string m_businessPlan;
 
     private Material m_transitionMat;
     private bool m_fadeIn = true;
@@ -163,8 +164,16 @@ public class PersistentData : MonoBehaviour {
         m_state = GameState.Paused;
     }
 
-    #region scene changing and shit
+    private int m_got, m_max, m_perc;
+    public void SetDealResults(int percent, int moneyGotten, int possibleMoney)
+    {
+        m_got = moneyGotten;
+        m_max = possibleMoney;
+        m_perc = percent;
+    }
 
+
+    #region scene changing and shit
 
     void OnSceneChanged(Scene last, Scene newScene)
     {
@@ -197,6 +206,15 @@ public class PersistentData : MonoBehaviour {
         {
             StartCoroutine(EndPlanTime());
         }
+        if (newScene.name == "DenInfo")
+        {
+            GameObject.Find("Document").GetComponent<Text>().text = m_businessPlan;
+        }
+
+        if (newScene.name == "EndGame")
+        {
+            GameObject.Find("Document").GetComponent<Text>().text = "You managed to sell " + m_perc + "% of your company for " + m_got + ". A decent amount, the best deal for you was " + m_max + "!";
+        }
     }
 
     public void ChangeSceneTo(string scene)
@@ -215,6 +233,7 @@ public class PersistentData : MonoBehaviour {
     IEnumerator EndPlanTime()
     {
         yield return new WaitForSeconds(5);
+        m_businessPlan = GameObject.Find("Document").GetComponent<Text>().text;
         ChangeSceneTo("DenInfo");
     }
 

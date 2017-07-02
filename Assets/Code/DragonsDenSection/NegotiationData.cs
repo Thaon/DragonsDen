@@ -99,17 +99,17 @@ public class NegotiationData : MonoBehaviour
 		print (pickupCount[0]);
 		print ("hello");
 
-		dragonPref[0, (int)pickups.cattle] = 1.1f;
+		dragonPref[0, (int)pickups.cattle] = 1.5f;
 		dragonPref[0, (int)pickups.gems] = 1;
-		dragonPref[0, (int)pickups.shares] = 0.9f;
+		dragonPref[0, (int)pickups.shares] = 0.6f;
 
-		dragonPref[1, (int)pickups.cattle] = 0.9f;
-		dragonPref[1, (int)pickups.gems] = 1.1f;
+		dragonPref[1, (int)pickups.cattle] = 0.6f;
+		dragonPref[1, (int)pickups.gems] = 1.5f;
 		dragonPref[1, (int)pickups.shares] = 1;
 
 		dragonPref[2, (int)pickups.cattle] = 1;
-		dragonPref[2, (int)pickups.gems] = 0.9f;
-		dragonPref[2, (int)pickups.shares] = 1.1f;
+		dragonPref[2, (int)pickups.gems] = 0.6f;
+		dragonPref[2, (int)pickups.shares] = 1.5f;
 
 		descriptions[0, 0] = "Somewhat edible";
 		descriptions[0, 1] = "Almost gluten free";
@@ -154,14 +154,15 @@ public class NegotiationData : MonoBehaviour
 
 	public void SubmitOffer ()
 	{
-		int dealValue = currentMoney * (1 + percentageAvailable / 10) - moneyWanted;
-
 		int assetValue = 0;
+
 
 		for (int i = 0; i < 4; i++)
 		{
 			assetValue += Mathf.RoundToInt (pickupCount[i] * shares[i] * (1 + currentMultiplier[i]) * dragonPref[chosenDragon, i]);
 		}
+
+		int dealValue = assetValue * (1 + percentageAvailable / 10) - moneyWanted;
 
 		print ("asset: " + assetValue);
 		print ("deal: " + dealValue);
@@ -190,6 +191,17 @@ public class NegotiationData : MonoBehaviour
 	{
 
 	}
+
+    public void EndDeal()
+    {
+        int assetValue = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            assetValue += Mathf.RoundToInt(pickupCount[i] * shares[i] * (1 + currentMultiplier[i]) * dragonPref[chosenDragon, i]);
+        }
+        persData.SetDealResults(percentageAvailable, moneyWanted * 50000, assetValue * 50000);
+        persData.ChangeSceneTo("EndGame");
+    }
 
 	public void CreateProduct (int val)
 	{
