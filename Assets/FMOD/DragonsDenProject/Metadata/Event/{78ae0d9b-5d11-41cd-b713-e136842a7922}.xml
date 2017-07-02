@@ -134,6 +134,7 @@
         <relationship name="automationPoints">
             <destination>{a7af6953-20d7-480d-99af-dade9e962c62}</destination>
             <destination>{687050ac-6438-42c1-9433-5765ae473f62}</destination>
+            <destination>{3db684a6-414f-44e3-b5c8-683d4f371636}</destination>
         </relationship>
     </object>
     <object class="LoopRegion" id="{8a457bcb-d816-449f-9f18-1f896c82c469}">
@@ -178,6 +179,14 @@
         </property>
         <property name="value">
             <value>-80</value>
+        </property>
+    </object>
+    <object class="AutomationPoint" id="{3db684a6-414f-44e3-b5c8-683d4f371636}">
+        <property name="position">
+            <value>0.4723186444666706</value>
+        </property>
+        <property name="value">
+            <value>-9</value>
         </property>
     </object>
     <object class="MixerBusFader" id="{1ada8408-ea21-4d26-adeb-3afe281560cf}"/>
