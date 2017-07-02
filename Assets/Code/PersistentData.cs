@@ -195,7 +195,7 @@ public class PersistentData : MonoBehaviour {
         }
         if (newScene.name == "Plan")
         {
-
+            StartCoroutine(EndPlanTime());
         }
     }
 
